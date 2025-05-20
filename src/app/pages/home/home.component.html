@@ -1,3 +1,18 @@
 <h2>Olympic games app</h2>
 <hr />
 <p>{{ (olympics$ | async)?.length }} data loaded</p>
+
+<div class="form-row">
+  <input type="text" value="Number of JOs {{numberOfOlympics}}" placeholder="Texte 1"  style="border-radius: 10px; padding: 5px;" />
+  <input type="text" value="Number of countries {{ numberOfCountries }}" placeholder="Texte 2"  style="border-radius: 10px; padding: 5px;" />
+</div>
+
+<ngx-charts-pie-chart
+  [view]="[700, 400]"
+  [results]="multi"
+  [legend]="true"
+  [labels]="true"
+  [doughnut]="false"
+  [explodeSlices]="false"
+  [gradient]="true">
+</ngx-charts-pie-chart>

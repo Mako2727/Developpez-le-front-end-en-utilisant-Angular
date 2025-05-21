@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { HttpClient } from '@angular/common/http';
-
+import { Router } from '@angular/router';
 
 
 interface Participation {
@@ -44,7 +44,7 @@ numberOfOlympics!: number;
   
   public olympics$: Observable<any> = of(null);
 
-  constructor(private olympicService: OlympicService,private  http: HttpClient) {}
+  constructor(private olympicService: OlympicService,private  http: HttpClient,private router: Router) {}
 
 ngOnInit(): void {
   this.olympics$ = this.olympicService.getOlympics();
@@ -58,12 +58,22 @@ ngOnInit(): void {
           return {name: country.country, value: totalMedals};
         });
            this.numberOfCountries = data.length;
-           this.numberOfOlympics = data[0]?.participations?.length || 0;
+           this.numberOfOlympics = data.reduce((total, country) => {
+  return total + (country.participations?.length || 0);
+}, 0);
       },
       (error) => {
         console.error('Erreur lors du chargement des données JSON:', error);
       }
     );
   }
+
+  onSelect(event: any): void {
+  console.log('Clicked slice:', event);
+  const countryName = event.name;
+  
+  // Par exemple : navigation vers /details
+  this.router.navigate(['/details', countryName]);
+}
 }
 

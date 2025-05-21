@@ -1,0 +1,33 @@
+
+<div class="form-row">
+<label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
+  Pays : {{countryName}}
+</label>
+</div>
+
+<div class="form-row">
+  <label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
+  Number of entries {{totalEntries}}
+</label>
+ <label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
+  Total number medals {{totalMedalsCount}}
+</label>
+<label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
+  Total number of athletes {{totalAthletes}}
+</label>
+</div>
+
+<ngx-charts-line-chart
+  [view]="[700, 400]"
+  [scheme]="'vivid'"
+  [results]="lineData"
+  [gradient]="false"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="false"
+  [showXAxisLabel]="true"
+  [showYAxisLabel]="true"
+  [xAxisLabel]="'Année'"
+  [yAxisLabel]="'Médailles'"
+  [autoScale]="true">
+</ngx-charts-line-chart>

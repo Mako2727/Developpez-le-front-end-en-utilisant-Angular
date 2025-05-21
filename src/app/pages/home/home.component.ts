@@ -72,7 +72,7 @@ ngOnInit(): void {
   console.log('Clicked slice:', event);
   const countryName = event.name;
   
-  // Par exemple : navigation vers /details
+
   this.router.navigate(['/details', countryName]);
 }
 }

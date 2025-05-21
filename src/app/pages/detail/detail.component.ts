@@ -2,7 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute  } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Router } from '@angular/router';
 
 
 interface ChartSeries {
@@ -44,11 +44,11 @@ lineData: {
  totalMedalsCount!: number;
  totalEntries!: number;
  totalAthletes!: number;
+scaleMin=0;
 
 
 
-
-  constructor(private olympicService: OlympicService,private  http: HttpClient,private route: ActivatedRoute ) {}
+  constructor(private olympicService: OlympicService,private  http: HttpClient,private route: ActivatedRoute,private router: Router ) {}
   
 
 ngOnInit(): void {
@@ -85,4 +85,8 @@ ngOnInit(): void {
 );
 
 }
+
+  goHome(): void {
+   this.router.navigate(['/']);
+  }
 }

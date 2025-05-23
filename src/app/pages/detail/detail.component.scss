@@ -2,3 +2,29 @@
   display: flex;
   gap: 10px; /* Espace entre les inputs */
 }
+
+.styled-label {
+  display: block;
+  width: 30%;
+  border: 1px solid  #2a9d8f; 
+  padding: 5px;
+  border-radius: 8px;
+  box-sizing: border-box; /* important pour la gestion des paddings */
+   text-align: center; /* centre le texte */
+   
+}
+
+.centered-label {
+  width: 180px; /* largeur réduite */
+  margin: 0 auto; /* centre horizontalement */
+  background-color: #2a9d8f; /* bleu-vert */
+  color: white; /* texte blanc pour contraste */
+  text-align: center; /* centre le texte */
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  display: block;
+  font-weight: 600;
+  user-select: none; /* optionnel, pour pas que ça soit sélectionnable */
+}

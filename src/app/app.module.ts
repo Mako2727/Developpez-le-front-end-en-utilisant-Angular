@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -12,7 +13,7 @@ import { DetailComponent } from './pages/detail/detail.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, NotFoundComponent,DetailComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule,NgxChartsModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule,NgxChartsModule,BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent],
 }) 

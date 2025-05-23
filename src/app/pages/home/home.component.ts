@@ -46,26 +46,31 @@ numberOfOlympics!: number;
 
   constructor(private olympicService: OlympicService,private  http: HttpClient,private router: Router) {}
 
-ngOnInit(): void {
-  this.olympics$ = this.olympicService.getOlympics();
+ ngOnInit(): void {
+    // On récupère l'observable depuis le service
+    this.olympics$ = this.olympicService.getOlympics();
 
-  this.http.get<CountryData[]>('../assets/mock/olympic.json').subscribe(
-     
-      (data) => {
-        this.multi = data.map((country) => {
-          console.log(JSON.stringify(data));
-          const totalMedals = country.participations.reduce((sum: number, p: any) => sum + p.medalsCount,0);
-          return {name: country.country, value: totalMedals};
+    // On transforme l'observable en souscription pour mettre à jour multi et les compteurs
+    this.olympics$.subscribe({
+      next: (data) => {
+        this.multi = data.map((country: CountryData) => {
+          const totalMedals = country.participations.reduce(
+            (sum, p) => sum + p.medalsCount,
+            0
+          );
+          return { name: country.country, value: totalMedals };
         });
-           this.numberOfCountries = data.length;
-           this.numberOfOlympics = data.reduce((total, country) => {
-  return total + (country.participations?.length || 0);
-}, 0);
+
+        this.numberOfCountries = data.length;
+        this.numberOfOlympics = data.reduce(
+          (total: number, country: CountryData) => total + (country.participations?.length || 0),
+          0
+        );
       },
-      (error) => {
+      error: (error) => {
         console.error('Erreur lors du chargement des données JSON:', error);
-      }
-    );
+      },
+    });
   }
 
   onSelect(event: any): void {

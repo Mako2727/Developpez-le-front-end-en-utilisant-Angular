@@ -1,24 +1,23 @@
 
 <div class="form-row">
-<label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
-  Pays : {{countryName}}
-</label>
+  <label class="styled-label centered-label">
+    Pays : {{countryName}}
+  </label>
 </div>
 
 <div class="form-row">
-  <label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
+  <label class="styled-label">
   Number of entries {{totalEntries}}
 </label>
- <label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
+ <label class="styled-label">
   Total number medals {{totalMedalsCount}}
 </label>
-<label style="display: block; width: 100%; max-width: 200px; border: 1px solid #ccc; padding: 5px; border-radius: 8px;">
+<label class="styled-label">
   Total number of athletes {{totalAthletes}}
 </label>
 </div>
 
 <ngx-charts-line-chart
-  [view]="[700, 400]"
   [scheme]="'vivid'"
   [results]="lineData"
   [gradient]="false"
@@ -33,4 +32,4 @@
 </ngx-charts-line-chart>
 
 
-<button (click)="goHome()">Retour à l'accueil</button>
+<button (click)="goHome()">🏠 Retour à l'accueil</button>

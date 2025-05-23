@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute  } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 
 interface ChartSeries {
@@ -45,45 +46,62 @@ lineData: {
  totalEntries!: number;
  totalAthletes!: number;
 scaleMin=0;
-
+ public olympics$: Observable<any> = of(null);
 
 
   constructor(private olympicService: OlympicService,private  http: HttpClient,private route: ActivatedRoute,private router: Router ) {}
   
 
 ngOnInit(): void {
- // Récupération de l'argument "country" passé dans l'URL
-    this.countryName = this.route.snapshot.paramMap.get('country') || '';
-    console.log('Pays sélectionné :', this.countryName);
+  // On récupère le pays sélectionné depuis l'URL
+  this.countryName = this.route.snapshot.paramMap.get('country') || '';
+  console.log('Pays sélectionné :', this.countryName);
 
- this.http.get<CountryData[]>('../assets/mock/olympic.json').subscribe(
-  (data) => {
-    const selectedCountry = data.find(c => c.country === this.countryName);
+  // Étape 1 : charger les données
+  this.olympicService.loadInitialData().subscribe({
+    next: () => {
+      // Étape 2 : une fois chargé, s'abonner à l'observable olympics$
+      this.olympics$ = this.olympicService.getOlympics();
 
-    if (selectedCountry) {
-      this.lineData = [{
-        name: selectedCountry.country,
-        series: selectedCountry.participations.map(p => ({
-          name: p.year.toString(),
-          value: p.medalsCount
-        }))
-      }];
+      this.olympics$.subscribe({
+        next: (data: CountryData[]) => {
+          const selectedCountry = data.find((c: CountryData) => c.country === this.countryName);
+          if (selectedCountry) {
+            this.lineData = [{
+              name: selectedCountry.country,
+              series: selectedCountry.participations.map((p: Participation) => ({
+                name: p.year.toString(),
+                value: p.medalsCount
+              }))
+            }];
 
-      this.totalMedalsCount = selectedCountry.participations.reduce((sum, p) => sum + p.medalsCount, 0);
-      this.totalEntries = selectedCountry.participations.length;
-      this.totalAthletes = selectedCountry.participations.reduce((sum, p) => sum + (p.athleteCount || 0), 0);
-    } else {
-      this.lineData = [];
-      this.totalMedalsCount = 0;
-      this.totalEntries = 0;
-      this.totalAthletes = 0;
+            this.totalMedalsCount = selectedCountry.participations.reduce(
+              (sum: number, p: Participation) => sum + p.medalsCount,
+              0
+            );
+
+            this.totalEntries = selectedCountry.participations.length;
+
+            this.totalAthletes = selectedCountry.participations.reduce(
+              (sum: number, p: Participation) => sum + (p.athleteCount || 0),
+              0
+            );
+          } else {
+            this.lineData = [];
+            this.totalMedalsCount = 0;
+            this.totalEntries = 0;
+            this.totalAthletes = 0;
+          }
+        },
+        error: (error: any) => {
+          console.error('Erreur lors de la souscription à olympics$ :', error);
+        }
+      });
+    },
+    error: (error: any) => {
+      console.error('Erreur lors du chargement initial :', error);
     }
-  },
-  (error) => {
-    console.error('Erreur lors du chargement des données JSON:', error);
-  }
-);
-
+  });
 }
 
   goHome(): void {

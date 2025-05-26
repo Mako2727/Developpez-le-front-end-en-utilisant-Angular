@@ -1,23 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-
-interface Participation {
-  id: number;
-  year: number;
-  city: string;
-  medalsCount: number;
-  athleteCount: number;
-}
-
-interface CountryData {
-  id: number;
-  country: string;
-  participations: Participation[];
-}
+import {  CountryData } from 'src/app/core/models/Olympic';
 
 @Component({
     selector: 'app-home',
@@ -28,10 +15,10 @@ interface CountryData {
 
 
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
  multi: { name: string; value: number }[] = [];
   view: [number, number] = [700, 400];
-
+private subscriptions:Subscription[]= [];
   legend = true;
   explodeSlices = false;
   labels = true;
@@ -46,12 +33,14 @@ numberOfOlympics!: number;
 
   constructor(private olympicService: OlympicService,private  http: HttpClient,private router: Router) {}
 
+
  ngOnInit(): void {
     // On récupère l'observable depuis le service
     this.olympics$ = this.olympicService.getOlympics();
 
     // On transforme l'observable en souscription pour mettre à jour multi et les compteurs
-    this.olympics$.subscribe({
+    this.subscriptions.push(this.olympics$.subscribe({
+
       next: (data) => {
         this.multi = data.map((country: CountryData) => {
           const totalMedals = country.participations.reduce(
@@ -70,8 +59,8 @@ numberOfOlympics!: number;
       error: (error) => {
         console.error('Erreur lors du chargement des données JSON:', error);
       },
-    });
-  }
+    }));
+  } 
 
   onSelect(event: any): void {
   console.log('Clicked slice:', event);
@@ -80,5 +69,10 @@ numberOfOlympics!: number;
 
   this.router.navigate(['/details', countryName]);
 }
+
+
+  ngOnDestroy(): void {
+     this.subscriptions.forEach(subs=>subs.unsubscribe());
+  }
 }
 

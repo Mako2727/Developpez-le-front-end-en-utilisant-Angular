@@ -1,32 +1,16 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute  } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
+import {  CountryData } from 'src/app/core/models/Olympic';
+import {  Participation } from 'src/app/core/models/Participation';
 
 
 interface ChartSeries {
   name: string;
   value: number;
-}
-
-interface ChartData {
-  name: string;
-  series: ChartSeries[];
-}
-interface Participation {
-  id: number;
-  year: number;
-  city: string;
-  medalsCount: number;
-  athleteCount: number;
-}
-
-interface CountryData {
-  id: number;
-  country: string;
-  participations: Participation[];
 }
 
 @Component({
@@ -36,7 +20,7 @@ interface CountryData {
   standalone: false,
 })
 
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy  {
 countryName: string = '';
 lineData: { 
   name: string; 
@@ -46,6 +30,7 @@ lineData: {
  totalEntries!: number;
  totalAthletes!: number;
 scaleMin=0;
+private subscriptions:Subscription[]= [];
  public olympics$: Observable<any> = of(null);
 
 
@@ -57,13 +42,10 @@ ngOnInit(): void {
   this.countryName = this.route.snapshot.paramMap.get('country') || '';
   console.log('Pays sélectionné :', this.countryName);
 
-  // Étape 1 : charger les données
-  this.olympicService.loadInitialData().subscribe({
-    next: () => {
-      // Étape 2 : une fois chargé, s'abonner à l'observable olympics$
+      
       this.olympics$ = this.olympicService.getOlympics();
 
-      this.olympics$.subscribe({
+      this.subscriptions.push(this.olympics$.subscribe({
         next: (data: CountryData[]) => {
           const selectedCountry = data.find((c: CountryData) => c.country === this.countryName);
           if (selectedCountry) {
@@ -96,15 +78,17 @@ ngOnInit(): void {
         error: (error: any) => {
           console.error('Erreur lors de la souscription à olympics$ :', error);
         }
-      });
-    },
-    error: (error: any) => {
-      console.error('Erreur lors du chargement initial :', error);
-    }
-  });
-}
+      }));
+
+  };
+
 
   goHome(): void {
    this.router.navigate(['/']);
+  }
+
+  
+  ngOnDestroy(): void {
+     this.subscriptions.forEach(subs=>subs.unsubscribe());
   }
 }

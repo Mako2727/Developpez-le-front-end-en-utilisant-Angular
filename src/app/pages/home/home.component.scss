@@ -1,16 +1,56 @@
 .form-row {
   display: flex;
-  gap
-  : 10px; /* Espace entre les inputs */
+  flex-wrap: wrap; /* autorise retour à la ligne */
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
+
+
 
 .centered-label {
   display: block;
   width: 30%;
-  border: 1px solid  #2a9d8f; 
-  padding: 5px;
+  min-width: 150px;
+  border: 1px solid #2a9d8f;
+  padding: 10px;
   border-radius: 8px;
-  box-sizing: border-box; /* important pour la gestion des paddings */
-   margin: 0 auto; /* centre horizontalement */
-    text-align: center; /* centre le texte */
+  box-sizing: border-box;
+  text-align: center;
+  margin: 5px;
+  background-color: #2a9d8f;
+  color: white;
+  font-weight: 600;
 }
+
+/* Responsive pour petits écrans */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column; /* empile verticalement */
+    align-items: center;
+  }
+
+  .centered-label {
+    width: 90%; /* presque toute la largeur */
+    font-size: 14px;
+  }
+}
+
+.chart-wrapper {
+  max-width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center; /* centre le chart horizontalement */
+  box-sizing: border-box;
+  padding: 0 10px; /* petite marge pour éviter que le chart colle aux bords */
+}
+
+/* Rendre ngx-charts responsive */
+ngx-charts-pie-chart {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+

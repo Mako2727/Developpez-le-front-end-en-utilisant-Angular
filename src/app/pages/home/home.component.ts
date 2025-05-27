@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subscription,observeOn, asyncScheduler } from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
 import {  CountryData } from 'src/app/core/models/Olympic';
+import { map } from 'rxjs/operators';
+import { LegendPosition } from '@swimlane/ngx-charts';
 
 @Component({
     selector: 'app-home',
@@ -17,50 +18,49 @@ import {  CountryData } from 'src/app/core/models/Olympic';
 
 export class HomeComponent implements OnInit, OnDestroy {
  multi: { name: string; value: number }[] = [];
-  view: [number, number] = [700, 400];
+view: [number, number] = [700, 400];
 private subscriptions:Subscription[]= [];
-  legend = true;
+  /*legend = true;
   explodeSlices = false;
   labels = true;
   doughnut = false;
-  gradient = false;
+  gradient = false; */ 
 
 numberOfCountries!: number;
 numberOfOlympics!: number;
-
+below: LegendPosition = LegendPosition.Below;
   
-  public olympics$: Observable<any> = of(null);
+  olympics$!: Observable<CountryData[]>;
+
+  multi$!: Observable<{ name: string; value: number }[]>;
+  numberOfCountries$!: Observable<number>;
+  numberOfOlympics$!: Observable<number>;
 
   constructor(private olympicService: OlympicService,private  http: HttpClient,private router: Router) {}
 
 
- ngOnInit(): void {
-    // On récupère l'observable depuis le service
-    this.olympics$ = this.olympicService.getOlympics();
+ngOnInit(): void {
+  this.olympics$ = this.olympicService.getOlympics().pipe(
+    map(data => data ?? []) // <-- évite les undefined
+  );
 
-    // On transforme l'observable en souscription pour mettre à jour multi et les compteurs
-    this.subscriptions.push(this.olympics$.subscribe({
+  this.multi$ = this.olympics$.pipe(
+    map(data => data.map(country => ({
+      name: country.country,
+      value: country.participations.reduce((sum, p) => sum + p.medalsCount, 0)
+    })))
+  );
 
-      next: (data) => {
-        this.multi = data.map((country: CountryData) => {
-          const totalMedals = country.participations.reduce(
-            (sum, p) => sum + p.medalsCount,
-            0
-          );
-          return { name: country.country, value: totalMedals };
-        });
+  this.numberOfCountries$ = this.olympics$.pipe(
+    map(data => data.length)
+  );
 
-        this.numberOfCountries = data.length;
-        this.numberOfOlympics = data.reduce(
-          (total: number, country: CountryData) => total + (country.participations?.length || 0),
-          0
-        );
-      },
-      error: (error) => {
-        console.error('Erreur lors du chargement des données JSON:', error);
-      },
-    }));
-  } 
+  this.numberOfOlympics$ = this.olympics$.pipe(
+    map(data =>
+      data.reduce((total, c) => total + (c.participations?.length || 0), 0)
+    )
+  );
+}
 
   onSelect(event: any): void {
   console.log('Clicked slice:', event);

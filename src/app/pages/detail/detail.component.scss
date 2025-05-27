@@ -1,30 +1,44 @@
 .form-row {
   display: flex;
-  gap: 10px; /* Espace entre les inputs */
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .styled-label {
   display: block;
   width: 30%;
-  border: 1px solid  #2a9d8f; 
+  border: 1px solid #2a9d8f;
   padding: 5px;
   border-radius: 8px;
-  box-sizing: border-box; /* important pour la gestion des paddings */
-   text-align: center; /* centre le texte */
-   
+  box-sizing: border-box;
+  text-align: center;
+  min-width: 150px;
+}
+
+@media (max-width: 600px) {
+  .styled-label {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 .centered-label {
-  width: 180px; /* largeur réduite */
-  margin: 0 auto; /* centre horizontalement */
-  background-color: #2a9d8f; /* bleu-vert */
-  color: white; /* texte blanc pour contraste */
-  text-align: center; /* centre le texte */
+  width: 180px;
+  margin: 0 auto;
+  background-color: #2a9d8f;
+  color: white;
+  text-align: center;
   padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
   box-sizing: border-box;
   display: block;
   font-weight: 600;
-  user-select: none; /* optionnel, pour pas que ça soit sélectionnable */
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .centered-label {
+    width: 90%;
+  }
 }

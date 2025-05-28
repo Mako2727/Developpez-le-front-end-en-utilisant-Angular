@@ -20,11 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
  multi: { name: string; value: number }[] = [];
 view: [number, number] = [700, 400];
 private subscriptions:Subscription[]= [];
-  /*legend = true;
-  explodeSlices = false;
-  labels = true;
-  doughnut = false;
-  gradient = false; */ 
+
 
 numberOfCountries!: number;
 numberOfOlympics!: number;

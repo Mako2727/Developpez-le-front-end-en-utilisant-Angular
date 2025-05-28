@@ -1,29 +1,29 @@
-# OlympicGamesStarter
+# Olympic games app
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.3.
+Ce projet a été généré avec Angular CLI version 19.2.12.  
+La version utilisée de la librairie `ngx-charts` est la ^22.0.0.
 
-Don't forget to install your node_modules before starting (`npm install`).
+N'oubliez pas d'installer les dépendances avant de lancer l’application (`npm install`).
 
-## Development server
+## Serveur de développement
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Lancez `ng serve` pour démarrer un serveur de développement.  
+Ouvrez ensuite votre navigateur à l’adresse http://localhost:4200/.  
+L’application se rechargera automatiquement dès que des modifications seront apportées aux fichiers sources.
 
-## Build
+## Compilation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Lancez `ng build` pour compiler le projet.  
+Les fichiers compilés seront placés dans le dossier `dist/`.
 
-## Where to start
+## Architecture du projet
 
-As you can see, an architecture has already been defined for the project. It is just a suggestion, you can choose to use your own. The predefined architecture includes (in addition to the default angular architecture) the following:
+Le dossier principal est `app` qui contient :
 
-- `components` folder: contains every reusable components
-- `pages` folder: contains components used for routing
-- `core` folder: contains the business logic (`services` and `models` folders)
+- les composants  
+- les pages liées au routage  
+- la logique métier (services et modèles)  
 
-I suggest you to start by understanding this starter code. Pay an extra attention to the `app-routing.module.ts` and the `olympic.service.ts`.
+Les interfaces TypeScript sont définies dans le dossier **models** et correspondent aux données JSON utilisées.
 
-Once mastered, you should continue by creating the typescript interfaces inside the `models` folder. As you can see I already created two files corresponding to the data included inside the `olympic.json`. With your interfaces, improve the code by replacing every `any` by the corresponding interface.
-
-You're now ready to implement the requested features.
-
-Good luck!
+Ce projet illustre l’utilisation d’Angular avec la librairie `ngx-charts` (version ^22.0.0) pour visualiser des données olympiques.

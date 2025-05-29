@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, of, Subscription,observeOn, asyncScheduler } from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {  CountryData } from 'src/app/core/models/Olympic';
 import { map } from 'rxjs/operators';
@@ -32,12 +31,12 @@ below: LegendPosition = LegendPosition.Below;
   numberOfCountries$!: Observable<number>;
   numberOfOlympics$!: Observable<number>;
 
-  constructor(private olympicService: OlympicService,private  http: HttpClient,private router: Router) {}
+  constructor(private olympicService: OlympicService,private router: Router) {}
 
 
 ngOnInit(): void {
   this.olympics$ = this.olympicService.getOlympics().pipe(
-    map(data => data ?? []) // <-- évite les undefined
+    map(data => data ?? []) 
   );
 
   this.multi$ = this.olympics$.pipe(

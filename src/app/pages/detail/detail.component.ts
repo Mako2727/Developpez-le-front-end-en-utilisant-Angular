@@ -8,17 +8,13 @@ import {  CountryData } from 'src/app/core/models/Olympic';
 import {  Participation } from 'src/app/core/models/Participation';
 
 
-interface ChartSeries {
-  name: string;
-  value: number;
-}
-
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
   standalone: false,
 })
+
 
 export class DetailComponent implements OnInit, OnDestroy  {
 countryName: string = '';
@@ -38,10 +34,8 @@ private subscriptions:Subscription[]= [];
   
 
 ngOnInit(): void {
-  // On récupère le pays sélectionné depuis l'URL
   this.countryName = this.route.snapshot.paramMap.get('country') || '';
   console.log('Pays sélectionné :', this.countryName);
-
       
       this.olympics$ = this.olympicService.getOlympics();
 

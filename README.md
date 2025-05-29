@@ -1,7 +1,7 @@
 # Olympic games app
 
 Ce projet a été généré avec Angular CLI version 19.2.12.  
-La version utilisée de la librairie `ngx-charts` est la ^22.0.0.
+La version utilisée de la librairie `ngx-charts` est la 22.0.0.
 
 N'oubliez pas d'installer les dépendances avant de lancer l’application (`npm install`).
 

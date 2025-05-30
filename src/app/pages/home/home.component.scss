@@ -1,6 +1,6 @@
 .form-row {
   display: flex;
-  flex-wrap: wrap; /* autorise retour à la ligne */
+  flex-wrap: wrap; 
   gap: 10px;
   justify-content: center;
   margin-bottom: 20px;
@@ -23,15 +23,15 @@
   font-weight: 600;
 }
 
-/* Responsive pour petits écrans */
+
 @media (max-width: 600px) {
   .form-row {
-    flex-direction: column; /* empile verticalement */
+    flex-direction: column; 
     align-items: center;
   }
 
   .centered-label {
-    width: 90%; /* presque toute la largeur */
+    width: 90%; 
     font-size: 14px;
   }
 }
@@ -40,9 +40,9 @@
   max-width: 100%;
   overflow-x: hidden;
   display: flex;
-  justify-content: center; /* centre le chart horizontalement */
+  justify-content: center; 
   box-sizing: border-box;
-  padding: 0 10px; /* petite marge pour éviter que le chart colle aux bords */
+  padding: 0 10px; 
 }
 
 /* Rendre ngx-charts responsive */

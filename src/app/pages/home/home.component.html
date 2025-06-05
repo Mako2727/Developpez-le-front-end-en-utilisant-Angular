@@ -1,12 +1,18 @@
 
-
+<div  class="form-row">
+  <label class="centered-label-header">
+   Medals per Country
+  </label>
+</div>
 <div class="form-row">
   <label class="centered-label">
-    Number of JOs {{numberOfOlympics$ | async}} 
+    <span class="label-title">Number of JOs</span><br>
+     <strong>{{numberOfOlympics$ | async}} </strong>
   </label>
 
   <label class="centered-label">
-    Number of countries {{ numberOfCountries$ | async }}
+    <span class="label-title">Number of countries</span><br>
+      <strong>{{ numberOfCountries$ | async }}</strong>
   </label>
 </div>
 
